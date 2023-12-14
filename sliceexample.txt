@@ -1,0 +1,12 @@
+rax.rsp|push rbx sub rsp , num callsite callee cmp rbx , rax -> rdi.rsp.rdx|push r14 push rbx mov r14 , rdx mov rbx , rdi call qword ptr [ rip + addr ] jmp addr
+rax.rsp|push rbx sub rsp , num callsite callee cmp rbx , rax -> rax.rsp.rsi|push rbx mov rbx , rsi test byte ptr [ rsi + num ] , num call qword ptr [ rip + addr ] mov rax , qword ptr [ rbx ] mov eax , num
+rax.rsp|push rbx sub rsp , num callsite callee cmp rbx , rax -> rdi.rax.rsp.rdx|push r15 push r14 cmp dword ptr [ rdi ] , num mov r14 , rdx mov rbx , qword ptr [ rdi + num ] call qword ptr [ rip + addr ] xor eax , eax
+rax.rsp|push rbx sub rsp , num callsite callee cmp rbx , rax -> rax.rsp.rsi|push rbx sub rsp , num mov rbx , rsi call qword ptr [ rip + addr ] xor eax , eax
+rax.rsp|push rbx sub rsp , num callsite callee cmp rbx , rax -> rsp.rdx.rbp.r8.rdi.rax.rcx.r9|push rbp push r15 mov r15 , rdx mov eax , dword ptr [ rdi ] mov r12 , rdi mov rax , qword ptr [ rdi + num ] call qword ptr [ rip + addr ] mov qword ptr [ rax ] , rcx xor edx , edx test rcx , rcx xor r8d , r8d xor r9d , r9d jmp addr test rbp , rbp
+rax.rsp|push rbx sub rsp , num callsite callee cmp rbx , rax -> rdi.rax.rsi.rdx.rsp|push r14 push rbx mov r14 , rsi mov rbx , rdi call qword ptr [ rip + addr ] xor edx , edx xor edx , edx xor eax , eax xor eax , eax
+rax.rsp|push rbx sub rsp , num callsite callee cmp rbx , rax -> rsp.r9.rax|push rax mov rdi , qword ptr [ r9 + num ] mov rsi , qword ptr [ r9 + num ] sub rsp , num call qword ptr [ rip + addr ] xor eax , eax
+rax.rsp|push rbx sub rsp , num callsite callee cmp rbx , rax -> rdi.rax.rsp|push rax test rdi , rdi call qword ptr [ rip + addr ] xor eax , eax
+rax.rsp|push rbx sub rsp , num callsite callee cmp rbx , rax -> rdx.r8.rsi.rcx.rsp|push rbx mov rdi , rdx mov rbx , rsi xor edx , edx xor ecx , ecx xor r8d , r8d call qword ptr [ rip + addr ] jmp qword ptr [ rip + addr ]
+rax.rsp|push rbx sub rsp , num callsite callee cmp rbx , rax -> rsp.rdx.zmm0.rbp.r8.rdi.rax.rsi.rcx.r9|push rbp push r15 mov r14 , rdx mov rdi , qword ptr [ rsi + num ] call
+ qword ptr [ rip + addr ] xor esi , esi xor ecx , ecx xor r8d , r8d xor r9d , r9d xor ecx , ecx xor r8d , r8d xor r9d , r9d xor edi , edi movaps xmm1 , xmm0 lea eax , [ rbx 
+- num ] mov eax , dword ptr [ rsp + num ] shr edx , num sub ebp , edx xor edi , edi

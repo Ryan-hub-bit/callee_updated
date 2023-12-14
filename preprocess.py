@@ -6,6 +6,8 @@ from argparse import ArgumentParser
 def get_slice_iter(_dir):
     for root,parent,files in os.walk(_dir):
         for slice_file in files:
+            if slice_file.endswith("_f.slice"):
+                continue
             filepath = os.path.join(root, slice_file)
             filesize = os.path.getsize(filepath)/(1024*1024)
             if filesize > 50:
@@ -45,5 +47,10 @@ if __name__ == '__main__':
         with open(os.path.join(args.output_dir, slice_file),'w') as f:
             for caller_data_tokenized, callee_data_tokenized in slice_paris_tokenized:
                 f.write('{} -> {}\n'.format(caller_data_tokenized, callee_data_tokenized))
-
         os.system("awk '!seen[$0]++' {} > {}.uniq".format(os.path.join(args.output_dir, slice_file), os.path.join(args.output_dir, slice_file)))
+        if os.path.exists(os.path.join(args.slice_dir, slice_file)):
+                    os.remove(os.path.join(args.slice_dir, slice_file))
+                    print("deleting {}".format(os.path.join(args.slice_dir,slice_file)))
+        if os.path.exists(os.path.join(args.output_dir, slice_file)):
+                    os.remove(os.path.join(args.output_dir, slice_file))
+                    print("deleting {}".format(os.path.join(args.output_dir,slice_file)))

@@ -14,9 +14,12 @@ class FeatureExtractor(torch.nn.Module):
         # self.hidden_attention = torch.nn.Linear(dim_hidden, dim_hidden)
         self.activation_function = torch.nn.ReLU()
         self.input_norm = torch.nn.LayerNorm(dim_input)
+        # change 200 to 100
+        # self.ln = torch.nn.Linear(2 * dim_input, dim_input)
         self.hidden_norm = torch.nn.LayerNorm(dim_hidden)
 
     def forward(self, x):
+        # x = self.ln(x)
         x = self.input_norm(x)
         # att = self.input_attention(x)
         # x = torch.multiply(x, torch.softmax(att,dim=-1))
@@ -44,6 +47,7 @@ class ContrastiveClassifier(torch.nn.Module):
         self.n_layers = n_layers_cls
         self.feature_extractor1 = FeatureExtractor(n_layers=n_layers_feature, dim_input=dim_input_feature, dim_hidden=dim_hidden_feature,dim_output=dim_output_feature)
         self.feature_extractor2 = FeatureExtractor(n_layers=n_layers_feature, dim_input=dim_input_feature, dim_hidden=dim_hidden_feature,dim_output=dim_output_feature)
+        # self.input_layer = torch.nn.Linear(2*dim_output_feature, dim_hidden_cls)
         self.input_layer = torch.nn.Linear(2*dim_output_feature, dim_hidden_cls)
         self.hidden_layer = torch.nn.Linear(dim_hidden_cls, dim_hidden_cls)
         self.output_layer = torch.nn.Linear(dim_hidden_cls, dim_output_cls)
